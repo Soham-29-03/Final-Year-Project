@@ -10,7 +10,7 @@ import aiRouter from "./routes/ai.routes.js";
 
 const app = express();
 
-// ✅ REVISED CORS CONFIGURATION: Allows access from your live Vercel URL safely
+// ✅ CORS CONFIGURATION: Allows access from your live Vercel URL safely
 app.use(cors({
   origin: 'https://formbuilderai-six.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -24,13 +24,23 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/api/health", (_req, res) => {
   res.json({ success: true, message: "API is healthy", uptime: process.uptime() });
 });
+app.get("/health", (_req, res) => {
+  res.json({ success: true, message: "API is healthy", uptime: process.uptime() });
+});
 
-// ✅ REGISTERED ROUTES: Every endpoint explicitly begins with /api
+// ✅ REGISTERED ROUTES (With /api prefix)
 app.use("/api/auth", authRoutes);
 app.use("/api/forms", formRouter);
 app.use("/api", responseRouter);
 app.use("/api", insightsRouter);
 app.use("/api/ai", aiRouter);
+
+// ✅ FALLBACK ROUTES (Without /api prefix, handles legacy frontend calls)
+app.use("/auth", authRoutes);
+app.use("/forms", formRouter);
+app.use("/", responseRouter);
+app.use("/", insightsRouter);
+app.use("/ai", aiRouter);
 
 // 404 Route Catch-All
 app.use((req, _res, next) => {
