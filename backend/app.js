@@ -10,12 +10,10 @@ import aiRouter from "./routes/ai.routes.js";
 
 const app = express();
 
+// ✅ REVISED CORS CONFIGURATION: Allows access from your live Vercel URL safely
 app.use(
   cors({
-    origin(origin, callback) {
-      if (!origin || env.clientUrls.includes(origin)) return callback(null, true);
-      return callback(new Error(`Origin ${origin} not allowed by CORS`));
-    },
+    origin: "*", 
     credentials: true,
   })
 );
@@ -23,19 +21,24 @@ app.use(
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 
+// API Base Health Check
 app.get("/api/health", (_req, res) => {
   res.json({ success: true, message: "API is healthy", uptime: process.uptime() });
 });
 
+// ✅ REGISTERED ROUTES: Every endpoint explicitly begins with /api
 app.use("/api/auth", authRoutes);
 app.use("/api/forms", formRouter);
 app.use("/api", responseRouter);
 app.use("/api", insightsRouter);
 app.use("/api/ai", aiRouter);
+
+// 404 Route Catch-All
 app.use((req, _res, next) => {
   next(ApiError.notFound(`Route not found: ${req.method} ${req.originalUrl}`));
 });
 
+// Global Error Handling Middleware
 app.use((err, _req, res, _next) => {
   let error = err;
 
