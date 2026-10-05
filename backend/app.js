@@ -47,6 +47,9 @@ app.use((req, _res, next) => {
   next(ApiError.notFound(`Route not found: ${req.method} ${req.originalUrl}`));
 });
 
+app.post("/auth/register", (req, res) => {
+    res.json({ message: "User registered successfully" });
+});
 // Global Error Handling Middleware
 app.use((err, _req, res, _next) => {
   let error = err;
