@@ -11,12 +11,11 @@ import aiRouter from "./routes/ai.routes.js";
 const app = express();
 
 // ✅ REVISED CORS CONFIGURATION: Allows access from your live Vercel URL safely
-app.use(
-  cors({
-    origin: "*", 
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: 'https://formbuilderai-six.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
