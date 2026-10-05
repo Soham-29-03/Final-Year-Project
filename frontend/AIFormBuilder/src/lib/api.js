@@ -1,15 +1,15 @@
-
 export const TOKEN_KEY = "formly_token";
 
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
 export const setToken = (token) => localStorage.setItem(TOKEN_KEY, token);
 export const clearToken = () => localStorage.removeItem(TOKEN_KEY);
 
-
-
 import axios from "axios";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+// Clean the VITE_API_URL to ensure it properly appends /api without double slashes
+const rawUrl = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const cleanBaseUrl = rawUrl.endsWith("/") ? rawUrl.slice(0, -1) : rawUrl;
+const API_BASE = cleanBaseUrl.endsWith("/api") ? cleanBaseUrl : `${cleanBaseUrl}/api`;
 
 const api = axios.create({
   baseURL: API_BASE,
@@ -46,5 +46,3 @@ api.interceptors.response.use(
 );
 
 export default api;
-
-
