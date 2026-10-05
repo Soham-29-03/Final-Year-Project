@@ -10,9 +10,12 @@ import aiRouter from "./routes/ai.routes.js";
 
 const app = express();
 
-// ✅ CORS CONFIGURATION: Allows access from your live Vercel URL safely
+// ✅ CORS CONFIGURATION: Allow your Vercel frontend URLs safely
 app.use(cors({
-  origin: 'https://formbuilderai-six.vercel.app',
+  origin: [
+    'https://formbuilderai-six.vercel.app',
+    'https://final-year-project-l2zr.vercel.app'
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
