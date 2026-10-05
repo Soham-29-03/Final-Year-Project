@@ -12,10 +12,7 @@ const app = express();
 
 // ✅ CORS CONFIGURATION: Allow your Vercel frontend URLs safely
 app.use(cors({
-  origin: [
-    'https://formbuilderai-six.vercel.app',
-    'https://final-year-project-l2zr.vercel.app'
-  ],
+  origin: 'https://final-year-project-gamma-eight.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
