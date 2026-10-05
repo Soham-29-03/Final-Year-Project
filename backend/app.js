@@ -12,10 +12,21 @@ const app = express();
 
 // ✅ CORS CONFIGURATION: Allow your Vercel frontend URLs safely
 app.use(cors({
-  origin: 'https://final-year-project-3vmbag2ds-sohams-projects-fcd74dce.vercel.app',
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl/Postman)
+    if (!origin) return callback(null, true);
+    
+    // Automatically trust any URL that contains "vercel.app" or matches localhost
+    if (origin.indexOf('vercel.app') !== -1 || origin.indexOf('localhost') !== -1) {
+      return callback(null, true);
+    }
+    
+    return callback(new Error(`Origin ${origin} not allowed by CORS`));
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
+
 
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
