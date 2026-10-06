@@ -10,23 +10,13 @@ import aiRouter from "./routes/ai.routes.js";
 
 const app = express();
 
-// ✅ CORS CONFIGURATION: Allow your Vercel frontend URLs safely
+// ✅ CORS CONFIGURATION: Allow everything temporarily to clear the 500 error
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl/Postman)
-    if (!origin) return callback(null, true);
-    
-    // Automatically trust any URL that contains "vercel.app" or matches localhost
-    if (origin.indexOf('vercel.app') !== -1 || origin.indexOf('localhost') !== -1) {
-      return callback(null, true);
-    }
-    
-    return callback(new Error(`Origin ${origin} not allowed by CORS`));
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
-
 
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
